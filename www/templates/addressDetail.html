@@ -1,0 +1,153 @@
+<ion-modal-view style="min-height:83%;top:45px" ng-controller="AddressCtrl"> 
+<div class="bar bar-subheader">
+	<ion-tabs class="tabs-positive  tabs-icon-top tabs-icon-only">
+
+	<ion-tab title="DELIVERY" icon-on="ion-android-walk" ng-click="changeTab('addressList')"
+		icon-off="ion-android-walk"> </ion-tab> 
+		<ion-tab title="PICK UP"
+		icon-on="ion-model-s" icon-off="ion-model-s" ng-click="changeTab('pickUp')"> </ion-tab>
+		<ion-tab title="Add address"
+		icon-on="ion-ios-plus" icon-off="ion-ios-plus" ng-click="changeTab('addAddress')"> </ion-tab>  
+		<ion-tab title="cancel"
+		icon-on="ion-android-close" icon-off="ion-android-close" ng-click="closeModal()"> </ion-tab>  
+		</ion-tabs>
+</div>
+
+<ion-content class="padding" has-header="true" style=" margin-top:39px">
+
+<div class="card" ng-if="activetab=='addressList'">
+<div class="item item-text-wrap" ng-if="addressList.length==0">
+Add  adrress to see in this list
+</div>
+<div class="item item-text-wrap" ng-if="address.gpsAddress">
+{{address.gpsAddress}}
+</div>
+  <div class="item item-text-wrap" ng-repeat="addr in addressList track by $index"
+  style="clear: both;overflow-y: scroll;" >
+  	<div class="item item-divider royal" ng-if="address.activeAddress==addr">
+   	<i class="ion-checkmark-circled">Selected</i>
+  	</div>
+  	<div ng-click="activateAddress(addr)">
+  	<i class="ion-checkmark" ng-if="address.activeAddress!=addr">Select</i>
+  	</div>
+  	<div >
+    {{addr.flat}} {{addr.street}} {{addr.areaname}} {{addr.cityname}}
+    </div>
+    <i class="ion-trash-b" style="color:red;font-size:1.7em;float:right" 
+    ng-click="deleteAddress(addr)"></i>
+  </div>
+  
+</div>
+
+<ion-list ng-if="activetab=='pickUp'">
+<ion-item style="padding:3px;border:0px;">
+<!-- <label class="item item-input item-stacked-label" style="border: 0px">Select
+	City </label> <input list="browsers" name="browser"
+	style="width: 100%; height: 45px; text-align: center"
+	placeholder="select city" ng-change="selectCity(city.id)" ng-model="city.id"/> <datalist id="browsers">
+
+	<option id="testId" ng-repeat="city in cityDetails track by $index"  value="{{city.name}}"></option>
+</datalist>  --> 
+<label class="item item-input">  <input ion-autocomplete type="text"
+	readonly="readonly" class="ion-autocomplete" autocomplete="off"
+	ng-model="city.id" item-value-key="id" item-view-value-key="name"
+	items-method="getCityItems(query)" items-method-value-key="cities"
+	placeholder="Enter city"
+	items-clicked-method="selectCity(city.id)"
+	items-removed-method="itemsRemoved(callback)" max-selected-items="1" />
+</label>
+            
+</ion-item>
+ <ion-item style="padding:3px;border:0px"> 
+<!--  <label class="item item-input item-stacked-label" style="border: 0px">Select
+	Area</label> 
+	<input list="browsers1" name="browser1" ng-change="selectArea(area)" ng-model="area"
+	style="width: 100%; height: 45px; text-align: center"
+	placeholder="select area"> <datalist id="browsers1">
+	<option ng-repeat="area in areaDetails track by $index" value="{{area.name}}">
+</datalist> -->
+<label class="item item-input">  <input ion-autocomplete type="text"
+	readonly="readonly" class="ion-autocomplete" autocomplete="off"
+	ng-model="areaId" item-value-key="id" item-view-value-key="name"
+	items-method="getAreaItems(query)" items-method-value-key="areas"
+	placeholder="Enter locality"
+	items-clicked-method="selectArea(areaId)"
+	items-removed-method="itemsRemoved(callback)" max-selected-items="1" />
+</label>
+ </ion-item>
+<button class="button button-full button-positive"
+		style="color: white; font-size: 17px;" ng-click="findOutlet()">
+		Find Outlet <i class="ion-arrow-right-c" style="font-size: 26px;"></i>
+	</button>
+	<ion-item ng-if="outlet">
+	 <div class="item item-text-wrap">
+     {{outletDetails[0].address}} {{outletDetails[0].name}}
+  </div>
+  </ion-item>
+</ion-list>
+
+<ion-list ng-if="activetab=='addAddress'"> 
+<ion-item style="padding:3px;border:0px;">
+<!-- <label class="item item-input item-stacked-label" style="border: 0px">Select
+	City </label> <input list="browsers" name="browser"
+	style="width: 100%; height: 45px; text-align: center"
+	placeholder="select city" ng-change="selectCity(city.id)" ng-model="city.id"/> <datalist id="browsers">
+
+	<option id="testId" ng-repeat="city in cityDetails track by $index"  value="{{city.name}}"></option>
+</datalist> -->
+<label class="item item-input">  <input ion-autocomplete type="text"
+	readonly="readonly" class="ion-autocomplete" autocomplete="off"
+	ng-model="city.id" item-value-key="id" item-view-value-key="name"
+	items-method="getCityItems(query)" items-method-value-key="cities"
+	placeholder="Enter city"
+	items-clicked-method="selectCity(city.id)"
+	items-removed-method="itemsRemoved(callback)" max-selected-items="1" />
+</label>
+ </ion-item>
+ <ion-item style="padding:3px;border:0px"> 
+ <!-- <label class="item item-input item-stacked-label" style="border: 0px">Select
+	Area</label> 
+	<input list="browsers1" name="browser1" ng-change="selectArea(area)" ng-model="area"
+	style="width: 100%; height: 45px; text-align: center"
+	placeholder="select area"> <datalist id="browsers1">
+	<option ng-repeat="area in areaDetails track by $index" value="{{area.name}}">
+</datalist> -->
+<label class="item item-input">  <input ion-autocomplete type="text"
+	readonly="readonly" class="ion-autocomplete" autocomplete="off"
+	ng-model="areaId" item-value-key="id" item-view-value-key="name"
+	items-method="getAreaItems(query)" items-method-value-key="areas"
+	placeholder="Enter locality"
+	items-clicked-method="selectArea(areaId)"
+	items-removed-method="itemsRemoved(callback)" max-selected-items="1" />
+</label>
+
+ </ion-item> <ion-item style="padding:3px;border:0px;"> <label
+	class="item item-input item-stacked-label" style="border: 0px">Type
+	street/society name</label> <input
+	style="width: 100%; height: 45px; text-align: center"
+	placeholder="Type street/society name" ng-model="addressDetails.street"> </ion-item> <ion-item
+	style="padding:3px;border:0px;"> <label
+	class="item item-input item-stacked-label" style="border: 0px" >flat/house
+	no</label> <input style="width: 100%; height: 45px; text-align: center"
+	placeholder="flat/house no" ng-model="addressDetails.flat"> </ion-item>
+	<button class="button button-full button-positive"
+		style="color: white; font-size: 17px;" ng-click="saveAddress()">
+		Save Address <i class="ion-arrow-right-c" style="font-size: 26px;"></i>
+	</button>
+	 </ion-list>
+	
+	
+	 </ion-content> 
+	 <ion-footer-bar
+	   ng-if="activetab=='addressList' && addressSelected"  class="bar-light" style="bottom:5%;">
+<div class="button-bar">
+	<button class="button button-positive"
+		style="color: white; font-size: 17px;">
+		Payment 
+	</button>
+	<button class="button button-positive"
+		style="color: white; font-size: 17px;" ng-click="changeAddress()">
+		Change Address 
+	</button>
+</div>
+</ion-footer-bar>  </ion-modal-view>

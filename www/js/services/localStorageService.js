@@ -1,0 +1,134 @@
+app.service('$localStorageService', function($localStorage) {
+	/*
+	 *  -1 :inactive status
+	 *   0 :guest status
+	 *   1 :active user
+	 */
+	this.getUserDetails= function() { 
+		var user=$localStorage.user;
+		if(angular.isUndefined(user.userDetails) || user.userDetails==null){
+			return null;
+		}
+		return user.userDetails;
+	};
+	this.logout = function() { 
+		$localStorage.$reset();
+	  /*  $ionicHistory.clearCache();
+	    $ionicHistory.clearHistory();*/
+	};
+
+
+	this.setUserDetails = function(userDetails) { 
+		/*if(angular.isUndefined($localStorage.user) || $localStorageService.user==null){
+			$localStorage.user={};	
+		}*/
+		$localStorage.user.userDetails=userDetails;
+	};
+
+	this.setUserInfo = function(a, b) {
+		/*if(angular.isUndefined($localStorage.user) || $localStorageService.user==null){
+			$localStorage.user={};	
+		}*/
+		$localStorage.user.userInfo=info;	
+	};
+
+	this.getUserInfo = function(a, b) {
+		var user=$localStorage.user;
+		if(angular.isUndefined(user.userInfo) || user.userInfo==null){
+			return null;
+		}
+		return user.userInfo;	
+	};
+
+	this.setUserStatus = function(status) { 
+		/*if(angular.isUndefined($localStorage.user)  || || $localStorageService.user==null){
+			$localStorage.user={};	
+		}*/
+		$localStorage.user.userStatus=status;		
+	};
+	this.setSessionId = function(sessionId) { 
+		$localStorage.user.userDetails.sessionid=sessionId;		
+	};
+	this.setMobileNo = function(mobileno) { 
+		$localStorage.user.userDetails.mobileno=mobileno;		
+	}
+
+
+	this.getUserStatus = function() { 
+		var user=$localStorage.user;
+		if(angular.isUndefined(user.userStatus) || user.userStatus==null){
+			return null;
+		}
+		return user.userStatus; 
+	};
+	this.getUser = function() { 
+		if(angular.isUndefined($localStorage.user) || $localStorage.user==null){
+			return null;
+		}
+		return $localStorage.user;
+	};
+	this.setUser=function(){
+		console.log("user initialized");
+		$localStorage.user={};
+	};
+	this.getCartDetails=function(){
+		var cart=$localStorage.cartDetails;
+		if(angular.isUndefined(cart) || cart==null){
+			$localStorage.recentList={};
+			return null;
+		}
+		return cart; 
+	};
+	this.setCardDetails=function(cart){
+		$localStorage.cartDetails=cart;
+	};
+	
+	this.clearCartDetails=function(){
+		delete $localStorage.cartDetails;
+	};
+	this.setCardDetails=function(cart){
+		$localStorage.cartDetails=cart;
+	};
+	this.initializeProductdetails=function(){
+		if(angular.isUndefined($localStorage.productDetails)){
+			$localStorage.productDetails={};
+		}	
+	};
+	this.setProductDetails=function(catName,product){
+		console.log("product in serviec",product);
+		console.log("catName"+catName);
+		if(angular.isUndefined($localStorage.productDetails[catName])){
+			$localStorage.productDetails[catName]={};
+		}	
+		$localStorage.productDetails[catName]=product;
+		console.log("$localStorage.productDetails",$localStorage.productDetails);
+	}
+	this.getProductDetails=function(catName){
+		var productDetails=$localStorage.productDetails[catName];
+		if(angular.isUndefined(productDetails) || productDetails==null){
+			return null;
+		}
+		return productDetails; 
+	};
+	this.setSingleProduct=function(catName,prodId,product){
+
+	};
+	this.getSingleProduct=function(catName,prodid){
+
+	};
+	this.updateRecentList=function(recentList,catName,prodid){
+		var recentList=$localStorage.recentList;
+		if(angular.isUndefined(recentList[catName]) || angular.isUndefined(recentList[catName])==null){
+			$localStorage.recentList[catName]=[];
+		}
+		$localStorage.recentList[catName].push(prodid); 
+	}
+	this.getrecentList=function(catName){
+		var recentList=$localStorage.recentList;
+		if(angular.isUndefined(recentList[catName]) || angular.isUndefined(recentList[catName])==null){
+			var arr=[];
+			return arr;
+		}
+		return $localStorage.recentList[catName];
+	}
+});

@@ -1,0 +1,97 @@
+
+<ion-modal-view style="min-height:83%;top:45px;bottom:47px"> 
+ <ion-header-bar class="bar bar-positive">
+<h3 style="font-size: 20px; white-space: nowrap; color: white">Order
+	Details</h3>
+<button class="button button-clear button-primary"
+	style="text-align: right; margin-left: 94px; font-size: 32px"
+	ng-click="closeModal()">
+	<i class="ion-android-close"></i>
+</button>
+</ion-header-bar>
+
+<div class="bar bar-subheader">
+	<button class="button button-full button-clear button-stable"
+		style="color: Red" ng-click="closeOrderModal()">+ADD NEW ITEM</button>
+</div>
+
+<ion-content class="padding" has-header="true"
+	style="padding:2px;margin-top:13%;margin-bottom:20%;"> 
+	<ion-list ng-if="cartDetails.productCount==0 || cartDetails.productCount==undefined">
+<ion-item>
+<h2><i class="ion-sad" style="color:red;font-size: 2.5em;"></i>Oops No item in your Cart </h2>
+</ion-item>
+</ion-list>
+	<ion-list ng-if="cartDetails.productCount>0">
+<ion-item style="background-color:gainsboro;padding:0px">
+<div class="row" style="font-size: 14px">
+	<div class="col">
+		<p>Name</p>
+	</div>
+	<div class="col" style="text-align: center">
+		<p>Qty</p>
+	</div>
+	<div class="col" style="text-align: right">
+		<p>Price</p>
+	</div>
+	<!-- <div class="col" style="text-align:right">
+			<p>Action</p>
+		</div> -->
+</div>
+ </ion-item> </ion-list> <ion-list ng-repeat="crt in cartDetails.itemList"> <ion-item
+	style="padding:3px">
+<div class="row">
+	<div class="col" style="font-size: 13px; text-align: left;" >
+		<span class="ion-ionic"
+			style="color: red; margin-right: 3px; margin-left: -7%"></span>
+		{{cartDetails.nodeDetails[crt].product.product_name}}
+		<p>size:{{cartDetails.nodeDetails[crt].properties.Size.toLowerCase()}},</p>
+		<p ng-if="cartDetails.nodeDetails[crt].properties.cheesy">+Extra Chesey</p>
+	<p ng-if="cartDetails.nodeDetails[crt].properties.toppins.length>0">Toppins:</p>	
+		<p ng-repeat="toppin in cartDetails.nodeDetails[crt].properties.toppins"
+			style="white-space: normal">
+			{{cartDetails.nodeDetails[toppin].toppingname.toLowerCase()}},</p>
+
+	</div>
+	<!-- <div class="col">{{cart.nodeDetails[crt].product.itemtype}}</div> -->
+	<div class="col" style="text-align: center">{{cartDetails.nodeDetails[crt].count}}</div>
+	<div class="col" style="text-align: right; font-size: 13px">{{cartDetails.nodeDetails[crt].amount}}</div>
+</div>
+<div style="text-align: right;">
+<!-- <button class="button  button-large button-clear">
+	<i style="font-size: 25px; color: black; margin: 4%"
+		class="ion-trash-b"></i></button> -->
+	<!-- <button   class="button button-clear" style="text-align: inherit;"> -->
+	<i style="font-size: 1.8em; color: black; margin: 4%"
+		class="ion-trash-b" ng-click="deleteItemFromCart(cartDetails.nodeDetails[crt].product)"></i>
+		<i style="font-size: 1.8em; color: red;"
+			 class="ion-edit" ng-if="cartDetails.nodeDetails[crt].properties.toppins"
+			 ng-click="editItemList(cartDetails.nodeDetails[crt].product)"></i>
+			 
+			 <span ng-if="cartDetails.nodeDetails[crt].properties.toppins==undefined"><i class="pull-left icon ion-ios-minus"
+					style="font-size: 1.8em; color: green"
+					ng-click="removeItemFromCart(cartDetails.nodeDetails[crt].product)"></i> <span
+					style="font-size: 1.6em;">{{cartDetails.nodeDetails[crt].count}}</span> <i
+					class=" pull-right icon ion-ios-plus"
+					style="font-size: 1.8em; color: green"
+					ng-click="addItemToCart(cartDetails.nodeDetails[crt].product)"></i></span>
+	<!-- </button>
+ -->
+</div>
+
+</ion-item>
+ </ion-list>
+
+</ion-content>
+ <ion-footer-bar class="bar-light" ng-if="cartDetails.productCount>0" style="bottom:13px">
+<div class="button-bar">
+	<button class="button button-light button-clear"
+		style="color: black; font-size: 20px;">
+		<i class="ion-ios-cart"> | RS.{{cartDetails.amount}}</i>
+	</button>
+	<button class="button button-positive" ng-click="Checkout('checkOut')"
+		style="color: white; font-size: 17px;">CHECKOUT <i class="ion-arrow-right-c" style="font-size:26px;"></i></button>
+</div>
+</ion-footer-bar>
+<hr></hr>
+ </ion-modal-view>
